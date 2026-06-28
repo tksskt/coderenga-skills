@@ -22,4 +22,4 @@ Good natural-language triggers include:
 - `implement this`
 - requests for refactoring, tests, patch generation, or local repository analysis
 
-When the request matches, load the `coderenga` skill and follow its install/use workflow. If CodeRenga is missing, install from the latest `tksskt/CodeRenga` GitHub Release and run `coderenga --init`. If no suitable release asset exists, stop and explain that a release asset is required.
+When the request matches, load the `coderenga` skill and follow its install/use workflow. If CodeRenga is missing, install from the latest `tksskt/CodeRenga` GitHub Release and initialize only when `coderenga.d` is missing. If no suitable release asset exists, stop and explain that a release asset is required.

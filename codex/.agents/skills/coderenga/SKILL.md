@@ -52,7 +52,7 @@ If CodeRenga is missing, install it from the latest GitHub Release for `tksskt/C
 
 If CodeRenga is already installed on `PATH` or in `.local/bin` / `.local\bin`, the installers reuse that binary and do not download it again.
 
-After resolving the binary, the installers always run `coderenga --init` or `coderenga.exe --init` in the target init directory. This is intentional: `--init` is expected to be idempotent and must not delete or overwrite existing user settings in `coderenga.d`. If a future CodeRenga build cannot guarantee that, prefer changing the installer to skip init when `coderenga.d` already exists instead of deleting or recreating that directory.
+After resolving the binary, the installers run `coderenga --init` or `coderenga.exe --init` only when `INIT_DIR/coderenga.d` does not exist. If `coderenga.d` already exists, the installers skip init and preserve the directory completely. To explicitly re-run init, use `FORCE_INIT=1` with the Bash installer or `-ForceInit` with the PowerShell installer. The installers never delete or recreate an existing `coderenga.d`.
 
 From the repository root, prefer:
 
@@ -80,7 +80,7 @@ On Windows, use the discovered executable path:
 .\coderenga.exe --init
 ```
 
-If `coderenga.d` already exists, do not delete it unless the user asks. Existing settings are user configuration. The installer does not remove existing `coderenga.d`; it only runs `--init` after binary resolution.
+If `coderenga.d` already exists, do not delete it unless the user asks. Existing settings are user configuration. The installer does not remove existing `coderenga.d`; it skips `--init` by default. Use `FORCE_INIT=1` for Bash or `-ForceInit` for PowerShell only when the user explicitly wants to re-run init over an existing configuration.
 
 Expected generated files include `coderenga.d/config.json`, `llm.json`, `mcp.json`, `tools.json`, `coderenga.db`, prompts, and modes.
 
@@ -164,7 +164,7 @@ Do not invent credentials. Ask the user or use existing local config.
 
 When validating a new CodeRenga binary, check the core behaviors from the former worker skill:
 
-- Fresh init: remove a disposable `coderenga.d`, run `coderenga.exe --init`, and confirm config, LLM, MCP, tools, database, prompt, and mode files are generated.
+- Fresh init: use a disposable init directory without `coderenga.d`, run the installer or `coderenga.exe --init`, and confirm config, LLM, MCP, tools, database, prompt, and mode files are generated. Also confirm the installer skips init when `coderenga.d` exists, unless `FORCE_INIT=1` or `-ForceInit` is supplied.
 - Normal chat: run `hello` in default, `coder`, `reviewer`, and `--no-persist`; expect no write tool, no prompt, and no tool loop.
 - Mode write policy: confirm `coder --non-interactive` can write, `debug` prompts for writes, `debug --non-interactive` fails clearly for confirm-required writes, and `reviewer` / `architect` do not write.
 - Tool calls: ask CodeRenga to read a test README and summarize it; expect the final answer to reflect the content without raw tool-call markup.

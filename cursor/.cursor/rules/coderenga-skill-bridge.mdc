@@ -8,4 +8,4 @@ The procedural workflow lives in `.cursor/skills/coderenga/SKILL.md`.
 
 For requests like `coderengaをインストールして`, `リポジトリを見て`, `レビューして`, `実装して`, `修正して`, `デバッグして`, `inspect this repo`, `review this change`, `fix this bug`, or `implement this`, use the `coderenga` Agent Skill proactively.
 
-If CodeRenga is missing, the skill should install it from the latest `tksskt/CodeRenga` GitHub Release and run `coderenga --init`. If no suitable release asset exists, stop and explain that a release asset is required.
+If CodeRenga is missing, the skill should install it from the latest `tksskt/CodeRenga` GitHub Release and initialize only when `coderenga.d` is missing. If no suitable release asset exists, stop and explain that a release asset is required.

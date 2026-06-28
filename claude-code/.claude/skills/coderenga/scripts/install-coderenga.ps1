@@ -1,11 +1,13 @@
-# Installs CodeRenga from the latest GitHub Release and initializes coderenga.d.
+# Installs CodeRenga from the latest GitHub Release and initializes coderenga.d only when needed.
 # Usage examples:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File .\.claude\skills\coderenga\scripts\install-coderenga.ps1
 #   powershell -NoProfile -ExecutionPolicy Bypass -File .\.claude\skills\coderenga\scripts\install-coderenga.ps1 -Repo tksskt/CodeRenga -InstallDir .\.local\bin -InitDir .
+#   powershell -NoProfile -ExecutionPolicy Bypass -File .\.claude\skills\coderenga\scripts\install-coderenga.ps1 -ForceInit
 param(
   [string]$Repo = "tksskt/CodeRenga",
   [string]$InstallDir = ".\.local\bin",
-  [string]$InitDir = "."
+  [string]$InitDir = ".",
+  [switch]$ForceInit
 )
 
 $ErrorActionPreference = "Stop"
@@ -91,11 +93,16 @@ if (-not $cmdPath) {
   Say "Found existing CodeRenga: $cmdPath"
 }
 
-Say "Initializing CodeRenga under $InitDir"
-Push-Location $InitDir
-try {
-  & $cmdPath --init
-} finally {
-  Pop-Location
+$coderengaDir = Join-Path $InitDir "coderenga.d"
+if ($ForceInit -or -not (Test-Path -Path $coderengaDir)) {
+  Say "Initializing CodeRenga under $InitDir"
+  Push-Location $InitDir
+  try {
+    & $cmdPath --init
+  } finally {
+    Pop-Location
+  }
+} else {
+  Say "Skipping CodeRenga init; found existing $coderengaDir"
 }
 Say "Done. Try: `"$cmdPath`" --cwd . --mode reviewer `"inspect this repository`""

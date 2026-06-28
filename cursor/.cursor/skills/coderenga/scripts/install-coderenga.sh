@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Installs CodeRenga from the latest GitHub Release and initializes coderenga.d.
+# Installs CodeRenga from the latest GitHub Release and initializes coderenga.d only when needed.
 # Usage examples:
 #   bash .cursor/skills/coderenga/scripts/install-coderenga.sh
 #   REPO=tksskt/CodeRenga INSTALL_DIR=.local/bin INIT_DIR=. bash .cursor/skills/coderenga/scripts/install-coderenga.sh
+#   FORCE_INIT=1 bash .cursor/skills/coderenga/scripts/install-coderenga.sh
 set -euo pipefail
 
 REPO="${REPO:-tksskt/CodeRenga}"
@@ -132,6 +133,10 @@ PY
   fi
 fi
 
-say "Initializing CodeRenga under $INIT_DIR"
-(cd "$INIT_DIR" && "$CODERENGA_BIN" --init)
+if [[ "${FORCE_INIT:-0}" == "1" || ! -e "$INIT_DIR/coderenga.d" ]]; then
+  say "Initializing CodeRenga under $INIT_DIR"
+  (cd "$INIT_DIR" && "$CODERENGA_BIN" --init)
+else
+  say "Skipping CodeRenga init; found existing $INIT_DIR/coderenga.d"
+fi
 say "Done. Try: $CODERENGA_BIN --cwd . --mode reviewer 'inspect this repository'"
