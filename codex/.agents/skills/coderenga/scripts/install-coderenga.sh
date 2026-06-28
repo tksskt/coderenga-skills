@@ -8,6 +8,7 @@ set -euo pipefail
 REPO="${REPO:-tksskt/CodeRenga}"
 INSTALL_DIR="${INSTALL_DIR:-.local/bin}"
 INIT_DIR="${INIT_DIR:-.}"
+INSTALL_DIR="$(mkdir -p "$INSTALL_DIR" && cd "$INSTALL_DIR" && pwd)"
 
 say() { printf '[coderenga-install] %s\n' "$*"; }
 
