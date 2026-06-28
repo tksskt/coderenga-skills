@@ -48,7 +48,11 @@ Get-ChildItem -Recurse -Force -Filter coderenga.exe | Select-Object FullName,Len
 
 If multiple binaries exist, prefer the one the user explicitly mentions. Otherwise prefer the newest binary in the active test directory or `.local\bin`.
 
-If CodeRenga is missing, install it from the latest GitHub Release for `tksskt/CodeRenga` and run initialization in the target project directory.
+If CodeRenga is missing, install it from the latest GitHub Release for `tksskt/CodeRenga` and run initialization in the target project directory. The installers use the GitHub Releases latest release API and choose an asset for the current platform. For Windows x64, the expected asset name is like `coderenga-windows-amd64.zip`.
+
+If CodeRenga is already installed on `PATH` or in `.local/bin` / `.local\bin`, the installers reuse that binary and do not download it again.
+
+After resolving the binary, the installers always run `coderenga --init` or `coderenga.exe --init` in the target init directory. This is intentional: `--init` is expected to be idempotent and must not delete or overwrite existing user settings in `coderenga.d`. If a future CodeRenga build cannot guarantee that, prefer changing the installer to skip init when `coderenga.d` already exists instead of deleting or recreating that directory.
 
 From the repository root, prefer:
 
@@ -76,7 +80,7 @@ On Windows, use the discovered executable path:
 .\coderenga.exe --init
 ```
 
-If `coderenga.d` already exists, do not delete it unless the user asks. Existing settings are user configuration.
+If `coderenga.d` already exists, do not delete it unless the user asks. Existing settings are user configuration. The installer does not remove existing `coderenga.d`; it only runs `--init` after binary resolution.
 
 Expected generated files include `coderenga.d/config.json`, `llm.json`, `mcp.json`, `tools.json`, `coderenga.db`, prompts, and modes.
 

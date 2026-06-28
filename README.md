@@ -117,3 +117,12 @@ coderenga-darwin-arm64.tar.gz
 Each archive should contain `coderenga` or `coderenga.exe`.
 
 If no release exists, the installers fail clearly instead of guessing or building from source.
+
+## Installer behavior
+
+All four tool integrations, Codex, Claude Code, OpenCode, and Cursor, use the same basic installer behavior:
+
+- If CodeRenga is not installed, the installer calls the latest GitHub Release API for `tksskt/CodeRenga`, selects a matching platform/arch asset, and installs `coderenga` or `coderenga.exe` into `.local/bin` / `.local\bin` by default.
+- If CodeRenga already exists on `PATH` or in `.local/bin` / `.local\bin`, the installer reuses that binary and does not download it again.
+- After resolving the binary, the installer runs `--init` in the target init directory every time.
+- Existing `coderenga.d` is user configuration. The installers do not delete or recreate it; `--init` is expected to be idempotent and preserve existing settings.

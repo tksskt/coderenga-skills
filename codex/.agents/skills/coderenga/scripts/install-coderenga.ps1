@@ -1,7 +1,7 @@
 # Installs CodeRenga from the latest GitHub Release and initializes coderenga.d.
 # Usage examples:
-#   powershell -NoProfile -ExecutionPolicy Bypass -File .\.cursor\skills\coderenga\scripts\install-coderenga.ps1
-#   powershell -NoProfile -ExecutionPolicy Bypass -File .\.cursor\skills\coderenga\scripts\install-coderenga.ps1 -Repo tksskt/CodeRenga -InstallDir .\.local\bin -InitDir .
+#   powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\skills\coderenga\scripts\install-coderenga.ps1
+#   powershell -NoProfile -ExecutionPolicy Bypass -File .\.agents\skills\coderenga\scripts\install-coderenga.ps1 -Repo tksskt/CodeRenga -InstallDir .\.local\bin -InitDir .
 param(
   [string]$Repo = "tksskt/CodeRenga",
   [string]$InstallDir = ".\.local\bin",

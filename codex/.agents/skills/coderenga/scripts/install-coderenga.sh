@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Installs CodeRenga from the latest GitHub Release and initializes coderenga.d.
 # Usage examples:
-#   bash .opencode/skills/coderenga/scripts/install-coderenga.sh
-#   REPO=tksskt/CodeRenga INSTALL_DIR=.local/bin INIT_DIR=. bash .opencode/skills/coderenga/scripts/install-coderenga.sh
+#   bash .agents/skills/coderenga/scripts/install-coderenga.sh
+#   REPO=tksskt/CodeRenga INSTALL_DIR=.local/bin INIT_DIR=. bash .agents/skills/coderenga/scripts/install-coderenga.sh
 set -euo pipefail
 
 REPO="${REPO:-tksskt/CodeRenga}"
